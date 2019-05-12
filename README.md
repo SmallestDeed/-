@@ -43,4 +43,65 @@ ArrayList没有线程安全的控制，add方法中判断当前数组是否足�
 ### 2.红黑树  
 ### 3.hashTable和concurrentHashMap哪里控制了线程安全?扩容的时候吗，还有呢？   
 ### 4.hashMap减少hash碰撞的方法？
+### 5.concurrentHahshMap的size方法？不准确？怎么解决？
+
+
+# 二、多线程
+### 1.线程的几种创建方式
+继承Thread类
+实现Runnable接口
+实现Callable接口
+线程池
+
+### 2.线程池的execute方法和submit方法的区别：
+execute一般是用ThreadPoolExecutor的exectue方法，可接受runnable作为参数，没有返回值，不能捕获异常
+submit一般是采用AbstractExecutorService的submit方法，可接受runnable或者callable作为参数，有返回值，可以捕获异常
+
+### 3.线程池的实现原理
+1.线程池和阻塞队列初始化，线程池初始化的时候，里面没有线程。  
+2.当一个任务进来，判断当前正在运行的线程数是否小于核心线程数：小于的话，创建线程去执行任务；大于的话，就把任务放到阻塞队列去。  
+3.当运行的线程执行完成之后，会去阻塞队列取任务。  
+4.当核心线程都在运行，阻塞队列已经满了的情况下，会创建小于最大线程数的线程去执行不能放入阻塞队列的任务。  
+5.当当前运行线程数大于最大线程数的时候，通过自定义的reject（）函数去处理新加的任务。  
+6.当当前线程池的空闲线程大于核心线程的时候，会回收多于核心线程数的线程。  
+秒杀场景会遇到这种情况  
+<br>
+
+
+# 三、Spring
+## 1.IOC
+* 控制反转：依赖对象的获取反转了。之前是程序在需要的时候主动创建依赖对象，现在是统一由spring容器来管理，程序被动的等待spring帮你注入。IOC很好的体现了面向对象的法则之一--好莱坞法则：别来找我们，我们去找你。  
+* DI依赖注入：被注入对象依赖IOC容器注入所需外部资源。  
+IOC是思想，DI是实现。  
+<br>
+* IOC的注入方式：构造器注入和setter注入  
+<br>
+* IOC在控制反转和依赖注入主要分为两个阶段：容器启动阶段和bean实例化阶段。  
+容器启动阶段主要步骤是：加载配置信息，分析配置信息，装备到BeanDefinition，其他后处理。。。  
+bean实例化阶段主要步骤是：实例化对象，装配依赖，生命周期回调，对象其他处理，注册回调接口。。。。  
+<br>
+* spring提供了两种容器：BeanFactory和ApplicationContext
+BeanFactory是基础容器，默认使用延迟加载策略。当客户端对象需要访问容器管理的对象时才会去初始化实例。容器启动比较快，适用于系统资源有限，功能要求不是很严格的情况  
+ApplicationContext是BeanFactory的子类，进行了功能扩展，支持事件发布，国际化等。默认在容器启动的时候就初始化所有的被容器管理的实例，所以容器初始化阶段会稍慢。适用于系统资源充足，要求更多功能的场景。   
+<br>
+* 容器初始化阶段详解：  
+1.低级容器加载配置文件信息：spring的BeanDefinitionReader的子类会获取xml或者其他文件的配置信息并解析，然后将解析之后的bean的信息映射到BeanDefinition对象中，BeanFactory中的每个bean就是存储在BeanDefinition中。   
+2.加载成功后，高级容器启动高级功能，如接口回调，事件发布，监听器，自动实例化单例等...   
+3.初始化入口时refresh()方法，该方法会判断当前上下文是否存在容器，存在会销毁容器，确保重新创建的bean在新的容器中。  
+4.容器内部维护了一个hashMap来存放每个bean的BeanDefinition，所有对bean的操作都是围绕这个hashMap来进行的。  
+5.调用getBean()方法实例化bean，有依赖关系的递归调用。   
+参考资料：https://www.cnblogs.com/ITtangtang/p/3978349.html    
+<br>
+<br>
+
+## 2.AOP
+
+
+
+## 3.spring Boot  
+starter-parent 定义了有各种版本号   
+
+@SpringBootApplication注解  
+
+run方法：创建内置tomcat等web容器，自动配置等等    
 
