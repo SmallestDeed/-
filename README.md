@@ -105,7 +105,11 @@ ApplicationContext是BeanFactory的子类，进行了功能扩展，支持事件
 <br>
 <br>
 
-## 2.AOP
+## 2.AOP  
+Spring AOP:面向切面编程，spring核心功能之一，实现原理是动态代理  
+动态代理分为JDK动态代理和CJLIB动态代理：jdk动态代理要求被代理对象必须实现接口，CJLIB动态代理可以不实现接口。   
+JDK动态代理：主要是通过invocationHandler 和 Proxy 类实现动态代理。需要有一个类实现InvocationHandler，并重写invoke方法，被代理对象作为属性，并在内部调用Proxy.newIntance创建出一个代理类，然后InvocationHandler的invoke方法内部通过代理类调用原方法，并在调用前后添加增强的逻辑。  
+CJLIB动态代理：   
 
 
 
@@ -116,3 +120,10 @@ starter-parent 定义了有各种版本号
 
 run方法：创建内置tomcat等web容器，自动配置等等    
 
+
+
+# 四、mysql
+### mysql查询主要分为三个部分  
+1.处理连接：服务端为每一个访问的客户端建立一个连接，接收服务端发来的文本文件  
+2.解析与优化：缓存查询（取消了）；语法解析；查询优化  
+3.存储引擎：innoDB（支持事务，外键，回滚）；myisam  
