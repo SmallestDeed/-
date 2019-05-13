@@ -7,21 +7,23 @@
 * List主要子类：ArrayList,LinkedList，Vector  
 * Set主要子类：HashSet，LinkedHashSet，TreeSet  
 * Queue主要子类：。。。...待补充  
+<br>
 
 * List添加顺序有序，元素可重复  
 * Set添加顺序无序，元素不可重复  
+<br>
 
 * ArrayList底层数据结构为数组，增删改比较慢，查询比加快，初始化的时候构建空数组，第一次add的时候会赋初始长度，默认10，扩容为长度的一半，有sort()方法可以排序，传入比较器即可  
 * LinkedList底层数据结构为链表，双向链表，增删改快，查询比较慢，没有初始长度，没有扩容，没有sort()方法排序  
 两者都是线程不安全的--------为什么，如何线程不安全？？
-* Vector是线程安全的
-
-
+* Vector是线程安全的,用synchronized修饰了
+<br>
+<br>
 
 * HashSet底层是hashMap的key，允许一个null键，允许null值，线程不安全，无序，不可重复  
 * TreeSet底层是treeMap的key，可排序  
 * LinkedHashSet底层是LinkedHashMap，插入和输出顺序一致  
-
+<br>
 
 ## 2.父类Map  --> 主要子类：HashMap，HashTable，TreeMap，ConcurrentHashMap
 * HashMap是线程不安全的，效率高，1.7和1.8实现线程安全的方式不同，允许null键null值，据说null键存放在node数组的首位？？？  
@@ -38,10 +40,19 @@
 
 # 问题收集
 ### 1.arrayList和LinkedList为什么线程不安全，如何线程安全
-ArrayList没有线程安全的控制，add方法中判断当前数组是否足够长度是线程不安全的；判断完给数组某一位置赋值的时候也是线程不安全的，造成替换原来的值但size+了多次
-
+ArrayList没有线程安全的控制，add方法中判断当前数组是否足够长度是线程不安全的；判断完给数组某一位置赋值的时候也是线程不安全的，造成替换原来的值但size+了多次  
+LinkedList同理，在判断是否是firstNode的时候会存在线程安全问题，在size++的时候也会存在线程安全问题  
+线程安全的方式：1.创建集合或使用集合的时候用synchronized；2.用Collections.synchronizedList(list)  
 ### 2.红黑树  
-### 3.hashTable和concurrentHashMap哪里控制了线程安全?扩容的时候吗，还有呢？   
+特性：1.根节点是黑色；2.每个叶子节点都是黑色的空节点（NIL节点）；3.每个红色的节点的两个子节点都是黑色的（不能有两个连续的红色节点）；4.从任意节点到任意叶子节点每条路径黑色节点的数量必须一致  
+红黑树添加元素分为三步：1.按照二叉树的方式添加元素；2.将新添加的节点变成红色（可以不违背黑色节点数量相同的原则）；3.如果不满足原则，进行旋转，变色达到平衡  
+<br>
+红黑树和avl树（平衡树）的区别：红黑树不是绝对的平衡，添加和删除快一点，旋转的次数少一点；查询多，添加删除少的话可以用avl树
+<br>
+顺便说下二叉树的缺点：元素按顺序添加很容易形成链表结构，不平衡
+### 3.hashTable和concurrentHashMap哪里控制了线程安全?扩容的时候吗，还有呢？  
+hashTable直接在几乎所有的方法上加了synchronized  
+
 ### 4.hashMap减少hash碰撞的方法？
 ### 5.concurrentHahshMap的size方法？不准确？怎么解决？
 
