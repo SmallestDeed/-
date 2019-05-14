@@ -133,4 +133,21 @@ run方法：创建内置tomcat等web容器，自动配置等等
 1.复合索引使用了非左边的索引  
 2.like查询%放在了开头  
 3.如果mysql估计根据索引查询比全表扫描慢，就不使用索引  
-4.如果用or连接，or前面有索引，后面没有，则不使用索引
+4.如果用or连接，or前面有索引，后面没有，则不使用索引  
+
+
+<br>
+<br>
+
+# 五、dubbo  
+### 1.常见的配置：  
+service：服务的提供者；属性有：interface：接口全类名；ref：引用，配置为实现类上的名称；protocol：协议，常用dubbo；version：版本；timeout：超时时间；group：分组；    
+reference:服务的消费者；属性有：id：使用的时候的名称；interface：接口全类名；retries：超时重试次数，默认2；timeout：超时时间；version：版本；group：分组，多实现的时候主要就是通过group来区分；  
+application：应用配置；属性有：name，名称    
+protocol：协议，由提供方指定，消费方被动接受；属性有：name：协议名称，常见dubbo；port：暴露的端口；    
+registry：注册中心；属性有：protocol：协议类型，常见的有zookeeper；address：注册中心地址；  
+
+
+
+
+
